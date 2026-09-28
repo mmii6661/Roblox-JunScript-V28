@@ -352,7 +352,11 @@ createButton("不要离开 ⭕", function()
 		loadstring(game:HttpGet("https://raw.githubusercontent.com/mmii6661/Roblox-JunScript-V28/main/%E4%B8%8D%E8%A6%81%E7%A6%BB%E5%BC%80%E5%9C%88%E5%AD%90.lua"))()
 	end)
 end).Parent = HomePage
-
+createButton("🐾 动物医院", function()
+	createConfirmPopup("即将加载「动物医院」脚本\n确定要执行吗？", function()
+		loadstring(game:HttpGet("https://raw.githubusercontent.com/mmii6661/Roblox-JunScript-V28/main/%E5%8A%A8%E7%89%A9%E5%8C%BB%E9%99%A2.lua"))()
+	end)
+end).Parent = HomePage
 -- ========================================
 -- ===== 设置页内容 =====
 -- ========================================
