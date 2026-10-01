@@ -357,6 +357,11 @@ createButton("🐾 动物医院", function()
 		loadstring(game:HttpGet("https://raw.githubusercontent.com/mmii6661/Roblox-JunScript-V28/main/%E5%8A%A8%E7%89%A9%E5%8C%BB%E9%99%A2.lua"))()
 	end)
 end).Parent = HomePage
+createButton("🍔 吃吃世界", function()
+	createConfirmPopup("即将加载「吃吃世界」脚本\n确定要执行吗？", function()
+		loadstring(game:HttpGet("https://raw.githubusercontent.com/mmii6661/Roblox-JunScript-V28/main/%E5%90%83%E5%90%83%E4%B8%96%E7%95%8C.lua"))()
+	end)
+end).Parent = HomePage
 -- ========================================
 -- ===== 设置页内容 =====
 -- ========================================
