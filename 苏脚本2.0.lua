@@ -362,10 +362,15 @@ createButton("🍔 吃吃世界", function()
 		loadstring(game:HttpGet("https://raw.githubusercontent.com/mmii6661/Roblox-JunScript-V28/main/%E5%90%83%E5%90%83%E4%B8%96%E7%95%8C.lua"))()
 	end)
 end).Parent = HomePage
+createButton("🚉 最后一站", function()
+	createConfirmPopup("即将加载「最后一站」脚本\n确定要执行吗？", function()
+		loadstring(game:HttpGet("https://raw.githubusercontent.com/mmii6661/Roblox-JunScript-V28/main/%E6%9C%80%E5%90%8E%E4%B8%80%E7%AB%99.lua"))()
+	end)
+end).Parent = HomePage
 -- ========================================
 -- ===== 设置页内容 =====
 -- ========================================
-createButton("切换夜色模式", function()
+createButton("切换白色模式", function()
 	print("苏脚本：换主题")
 end).Parent = SettingsPage
 
