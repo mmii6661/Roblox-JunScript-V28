@@ -178,15 +178,14 @@ local SettingsPage = new("Frame", {
 	Parent = Content
 })
 
-for _, page in ipairs({HomePage, SettingsPage}) do
-	new("UIListLayout", {
-		SortOrder = Enum.SortOrder.LayoutOrder,
-		Padding = UDim.new(0, 8),
-		HorizontalAlignment = Enum.HorizontalAlignment.Center,
-		Parent = page
-	})
-	new("UIPadding", { PaddingTop = UDim.new(0, 10), Parent = page })
-end
+-- 设置页布局
+new("UIListLayout", {
+	SortOrder = Enum.SortOrder.LayoutOrder,
+	Padding = UDim.new(0, 8),
+	HorizontalAlignment = Enum.HorizontalAlignment.Center,
+	Parent = SettingsPage
+})
+new("UIPadding", { PaddingTop = UDim.new(0, 10), Parent = SettingsPage })
 
 -- ========================================
 -- ===== 按钮工厂 =====
@@ -339,34 +338,50 @@ local function createConfirmPopup(descText, onConfirm)
 end
 
 -- ========================================
--- ===== 主页内容 =====
+-- ===== 主页内容（自动生成 + 滚动） =====
 -- ========================================
-createButton("🛒 在超市生存一周", function()
-	createConfirmPopup("即将加载「在超市生存一周」脚本\n确定要执行吗？", function()
-		loadstring(game:HttpGet("https://raw.githubusercontent.com/mmii6661/Roblox-JunScript-V28/main/%E6%81%90%E8%84%9A%E6%9C%AC%E5%9C%A8%E8%B6%85%E5%B8%82%E7%94%9F%E6%B4%BB%E4%B8%80%E5%91%A8.lua"))()
-	end)
-end).Parent = HomePage
+local HomeScroll = new("ScrollingFrame", {
+	Size = UDim2.new(1, -20, 1, -10),
+	Position = UDim2.new(0, 10, 0, 5),
+	BackgroundColor3 = Color3.fromRGB(24, 26, 34),
+	BackgroundTransparency = 1,
+	ScrollBarThickness = 4,
+	ScrollBarImageColor3 = Color3.fromRGB(80, 80, 80),
+	Parent = HomePage,
+	ClipsDescendants = true,
+})
 
-createButton("不要离开 ⭕", function()
-	createConfirmPopup("即将加载「不要离开 ⭕」脚本\n确定要执行吗？", function()
-		loadstring(game:HttpGet("https://raw.githubusercontent.com/mmii6661/Roblox-JunScript-V28/main/%E4%B8%8D%E8%A6%81%E7%A6%BB%E5%BC%80%E5%9C%88%E5%AD%90.lua"))()
-	end)
-end).Parent = HomePage
-createButton("🐾 动物医院", function()
-	createConfirmPopup("即将加载「动物医院」脚本\n确定要执行吗？", function()
-		loadstring(game:HttpGet("https://raw.githubusercontent.com/mmii6661/Roblox-JunScript-V28/main/%E5%8A%A8%E7%89%A9%E5%8C%BB%E9%99%A2.lua"))()
-	end)
-end).Parent = HomePage
-createButton("🍔 吃吃世界", function()
-	createConfirmPopup("即将加载「吃吃世界」脚本\n确定要执行吗？", function()
-		loadstring(game:HttpGet("https://raw.githubusercontent.com/mmii6661/Roblox-JunScript-V28/main/%E5%90%83%E5%90%83%E4%B8%96%E7%95%8C.lua"))()
-	end)
-end).Parent = HomePage
-createButton("🚉 最后一站", function()
-	createConfirmPopup("即将加载「最后一站」脚本\n确定要执行吗？", function()
-		loadstring(game:HttpGet("https://raw.githubusercontent.com/mmii6661/Roblox-JunScript-V28/main/%E6%9C%80%E5%90%8E%E4%B8%80%E7%AB%99.lua"))()
-	end)
-end).Parent = HomePage
+new("UIListLayout", {
+	SortOrder = Enum.SortOrder.LayoutOrder,
+	Padding = UDim.new(0, 6),
+	HorizontalAlignment = Enum.HorizontalAlignment.Center,
+	VerticalAlignment = Enum.VerticalAlignment.Top,
+	Parent = HomeScroll
+})
+new("UIPadding", { PaddingTop = UDim.new(0, 6), Parent = HomeScroll })
+
+local HomeScripts = {
+	{ Name = "🛒 在超市生存一周", File = "恐脚本在超市生活一周.lua" },
+	{ Name = "不要离开 ⭕", File = "不要离开圈子.lua" },
+	{ Name = "🐾 动物医院", File = "动物医院.lua" },
+	{ Name = "🍔 吃吃世界", File = "吃吃世界.lua" },
+	{ Name = "🚉 最后一站", File = "最后一站.lua" },
+	-- 以后往这里加，无限加 ↓
+	-- { Name = "🎮 新游戏名", File = "新文件.lua" },
+}
+
+for _, v in ipairs(HomeScripts) do
+	createButton(v.Name, function()
+		createConfirmPopup("即将加载「"..v.Name.."」脚本\n确定要执行吗？", function()
+			loadstring(game:HttpGet("https://raw.githubusercontent.com/mmii6661/Roblox-JunScript-V28/main/"..v.File))()
+		end)
+	end).Parent = HomeScroll
+end
+
+-- 自动计算滚动区域高度
+task.wait()
+HomeScroll.CanvasSize = UDim2.new(0, 0, 0, HomeScroll.UIListLayout.AbsoluteContentSize.Y + 10)
+
 -- ========================================
 -- ===== 设置页内容 =====
 -- ========================================
@@ -409,7 +424,7 @@ SettingsTab.Position = UDim2.new(0, 150, 0, 3)
 -- ===== 灵动岛 展开/收起 核心逻辑 =====
 -- ========================================
 local islandOpen = false
-local IslandOpenSize  = UDim2.new(0, 420, 0, 280)
+local IslandOpenSize  = UDim2.new(0, 420, 0, 320)
 local IslandCloseSize = UDim2.new(0, 120, 0, 34)
 
 local function setMain(show)
