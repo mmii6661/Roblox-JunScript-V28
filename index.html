@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>苏脚本 · 游戏辅助工具</title>
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --bg: #fafaf9;
+      --surface: #fff;
+      --text: #1c1917;
+      --muted: #78716c;
+      --accent: #d97706;
+      --accent-light: #fde68a;
+      --border: #e7e5e4;
+      --shadow: rgba(0,0,0,.06);
+      --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+      --max-w: 720px;
+      --radius: 12px;
+    }
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; text-decoration: none; }
+    button { font-family: inherit; cursor: pointer; }
+
+    /* Layout */
+    .app { min-height: 100vh; display: flex; flex-direction: column; }
+    .main {
+      flex: 1;
+      width: 100%;
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 40px 24px;
+    }
+
+    /* Header */
+    .header {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(255,255,255,.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    .header-inner {
+      max-width: 960px; margin: 0 auto;
+      padding: 14px 24px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .logo { font-size: 1.25rem; font-weight: 700; letter-spacing: -.02em; }
+    .logo span { color: var(--accent); }
+    .nav-links { display: flex; gap: 28px; list-style: none; }
+    .nav-links a {
+      font-size: .9rem; font-weight: 500; color: var(--muted);
+      transition: color .2s;
+    }
+    .nav-links a:hover, .nav-links a.active { color: var(--text); }
+
+    /* Hero */
+    .hero { text-align: center; padding: 24px 0 48px; }
+    .hero-avatar {
+      width: 88px; height: 88px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), #f59e0b);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2rem; margin: 0 auto 20px; color: #fff; font-weight: 700;
+    }
+    .hero h1 { font-size: 1.75rem; font-weight: 800; letter-spacing: -.03em; margin-bottom: 12px; }
+    .hero p { font-size: 1rem; color: var(--muted); max-width: 520px; margin: 0 auto; }
+
+    /* Section */
+    .section-title {
+      font-size: 1.35rem; font-weight: 700; letter-spacing: -.02em;
+      margin-bottom: 24px; padding-bottom: 12px; border-bottom: 2px solid var(--border);
+    }
+
+    /* Post cards */
+    .post-list { display: flex; flex-direction: column; gap: 16px; }
+    .post-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px 28px;
+      cursor: pointer;
+      transition: all .25s ease;
+    }
+    .post-card:hover {
+      border-color: var(--accent-light);
+      box-shadow: 0 4px 20px var(--shadow);
+      transform: translateY(-2px);
+    }
+    .post-meta {
+      display: flex; align-items: center; gap: 12px;
+      font-size: .8rem; color: var(--muted); margin-bottom: 8px;
+    }
+    .post-tag {
+      background: var(--accent-light); color: #92400e;
+      padding: 2px 10px; border-radius: 999px;
+      font-size: .72rem; font-weight: 600;
+    }
+    .post-card h3 { font-size: 1.15rem; font-weight: 700; margin-bottom: 6px; letter-spacing: -.01em; }
+    .post-card p { font-size: .9rem; color: var(--muted); line-height: 1.6; }
+
+    /* Post detail */
+    .post-detail { animation: fadeIn .3s ease; }
+    .back-link {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: .9rem; font-weight: 500; color: var(--muted);
+      margin-bottom: 32px; transition: color .2s;
+    }
+    .back-link:hover { color: var(--accent); }
+    .post-detail-header { margin-bottom: 32px; padding-bottom: 24px; border-bottom: 1px solid var(--border); }
+    .post-detail-header .post-tag { display: inline-block; margin-bottom: 12px; }
+    .post-detail-header h1 { font-size: 2rem; font-weight: 800; letter-spacing: -.03em; line-height: 1.3; margin-bottom: 12px; }
+    .post-body { font-size: 1rem; line-height: 1.9; color: #292524; }
+    .post-body h2 { font-size: 1.3rem; font-weight: 700; margin: 32px 0 12px; letter-spacing: -.02em; }
+    .post-body p { margin-bottom: 16px; }
+    .post-body code {
+      background: #f5f5f4; padding: 2px 6px; border-radius: 4px;
+      font-family: 'Fira Code','SF Mono',monospace; font-size: .85em;
+    }
+
+    /* Feedback */
+    .page-title { font-size: 1.75rem; font-weight: 800; letter-spacing: -.03em; margin-bottom: 8px; }
+    .page-desc { font-size: .95rem; color: var(--muted); margin-bottom: 32px; }
+    .feedback-form {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 32px;
+      display: flex; flex-direction: column; gap: 20px;
+    }
+    .form-group { display: flex; flex-direction: column; gap: 6px; }
+    .form-group label { font-size: .85rem; font-weight: 600; }
+    .required { color: #ef4444; }
+    .form-group input, .form-group select, .form-group textarea {
+      font-family: inherit; font-size: .95rem;
+      padding: 10px 14px;
+      border: 1px solid var(--border); border-radius: 8px;
+      background: var(--bg); color: var(--text); outline: none;
+      transition: border-color .2s;
+    }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+      border-color: var(--accent);
+    }
+    .form-group textarea { resize: vertical; min-height: 120px; line-height: 1.6; }
+    .btn-primary {
+      font-size: .95rem; font-weight: 600;
+      padding: 12px 28px; border: none; border-radius: 8px;
+      background: var(--accent); color: #fff;
+      transition: opacity .2s, transform .15s; align-self: flex-start;
+    }
+    .btn-primary:hover { opacity: .9; }
+    .btn-primary:active { transform: scale(.98); }
+
+    /* Success */
+    .feedback-success { text-align: center; padding: 48px 0; }
+    .success-icon {
+      width: 64px; height: 64px; border-radius: 50%;
+      background: #22c55e; color: #fff; font-size: 2rem;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 20px;
+    }
+    .feedback-success h2 { font-size: 1.4rem; font-weight: 700; margin-bottom: 8px; }
+    .feedback-success p { font-size: .95rem; color: var(--muted); margin-bottom: 24px; }
+
+    /* Feedback list */
+    .feedback-list { margin-top: 40px; }
+    .feedback-list h2 { font-size: 1.1rem; font-weight: 700; margin-bottom: 16px; }
+    .feedback-item {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 16px 20px; margin-bottom: 12px;
+    }
+    .feedback-item-header {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 8px; font-size: .8rem; color: var(--muted);
+    }
+    .feedback-item-title { font-weight: 600; font-size: .95rem; margin-bottom: 4px; }
+    .feedback-item-body { font-size: .9rem; color: var(--muted); }
+    .status-badge {
+      padding: 2px 8px; border-radius: 999px; font-size: .7rem; font-weight: 600;
+    }
+    .status-pending { background: #fef3c7; color: #92400e; }
+    .status-fixed { background: #d1fae5; color: #065f46; }
+
+    /* About */
+    .about-section { animation: fadeIn .3s ease; }
+    .about-section h1 { font-size: 1.75rem; font-weight: 800; margin-bottom: 20px; letter-spacing: -.03em; }
+    .about-section p { font-size: 1rem; color: #44403c; margin-bottom: 16px; }
+    .about-section h2 { font-size: 1.2rem; font-weight: 700; margin: 28px 0 12px; }
+    .skill-list { display: flex; flex-wrap: wrap; gap: 8px; list-style: none; margin-top: 8px; }
+    .skill-list li {
+      background: var(--surface); border: 1px solid var(--border);
+      padding: 6px 14px; border-radius: 999px; font-size: .85rem; font-weight: 500;
+    }
+
+    /* Footer */
+    .footer {
+      border-top: 1px solid var(--border); padding: 32px 24px;
+      text-align: center; font-size: .85rem; color: var(--muted);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Toast */
+    .toast {
+      position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+      background: #1c1917; color: #fff; padding: 12px 24px; border-radius: 8px;
+      font-size: .9rem; font-weight: 500; z-index: 1000;
+      animation: slideUp .3s ease;
+    }
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateX(-50%) translateY(16px); }
+      to { opacity: 1; transform: translateX(-50%) translateY(0); }
+    }
+
+    @media (max-width: 640px) {
+      .header-inner { padding: 12px 16px; }
+      .nav-links { gap: 16px; }
+      .main { padding: 32px 16px; }
+      .hero h1 { font-size: 1.4rem; }
+      .post-detail-header h1 { font-size: 1.5rem; }
+      .post-card { padding: 18px 20px; }
+      .feedback-form { padding: 20px; }
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <!-- React via CDN -->
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <script type="text/babel">
+    const { useState, useEffect } = React;
+
+    // ===== Data =====
+    const posts = [
+      {
+        id: 1,
+        title: '苏脚本 v2.1.0 发布 — 新增自动副本功能',
+        excerpt: '本次更新加入了自动副本挂机模块，优化了内存占用，修复了闪退问题。',
+        tag: '更新公告',
+        date: '2026-10-08',
+        content: `
+          <h2>更新内容</h2>
+          <p>经过两周的测试，苏脚本 <code>v2.1.0</code> 正式发布。本次版本的核心变化如下：</p>
+          <p><strong>新增：</strong>自动副本挂机模块，支持一键循环刷本，可配置副本次数与体力阈值。</p>
+          <p><strong>优化：</strong>内存占用下降约 30%，长时间挂机更稳定。</p>
+          <p><strong>修复：</strong>修复了部分机型切换场景时闪退的问题，修复任务队列偶发卡死。</p>
+          <h2>使用说明</h2>
+          <p>下载后解压到游戏根目录，运行 <code>苏脚本.exe</code> 即可。首次使用建议先运行「环境检测」。</p>
+          <p>如遇问题，请到「反馈」页面提交你遇到的 Bug，我会尽快处理。</p>
+        `
+      },
+      {
+        id: 2,
+        title: '苏脚本 v2.0.0 重写日志',
+        excerpt: '内核重写完成，支持更多游戏，界面全新设计，操作更直观。',
+        tag: '更新公告',
+        date: '2026-09-20',
+        content: `
+          <h2>重构说明</h2>
+          <p>v2.0.0 是一次大版本升级，内核从零重写：</p>
+          <p>新内核采用模块化设计，每个功能独立加载，启动速度提升 50%。</p>
+          <p>界面改用暗色主题，所有操作都可以在首页完成，不再需要打开多个窗口。</p>
+          <h2>兼容性</h2>
+          <p>支持 Windows 10 / 11，暂不支持 macOS 和 Linux。</p>
+          <p>部分杀毒软件可能误报，请添加信任或关闭实时防护。</p>
+        `
+      },
+      {
+        id: 3,
+        title: '常见问题与使用规范',
+        excerpt: '汇总大家最常问的问题，以及使用苏脚本需要注意的几点。',
+        tag: '使用指南',
+        date: '2026-09-15',
+        content: `
+          <h2>常见问题</h2>
+          <p><strong>Q：会被封号吗？</strong><br/>A：脚本遵循游戏操作频率限制，正常使用风险极低，但任何第三方工具都存在理论风险，请自行权衡。</p>
+          <p><strong>Q：支持哪些游戏？</strong><br/>A：目前支持主流的几款手游，具体列表见下载页面。</p>
+          <h2>使用规范</h2>
+          <p>请勿将脚本用于商业代练或违规行为，仅供个人娱乐使用。</p>
+          <p>遇到问题先在反馈页面搜索是否有人提过，再提交新反馈。</p>
+        `
+      }
+    ];
+
+    // Load feedback from localStorage
+    const loadFeedback = () => {
+      try {
+        const saved = localStorage.getItem('suscript_feedback');
+        return saved ? JSON.parse(saved) : [];
+      } catch { return []; }
+    };
+
+    // ===== Components =====
+    function Header({ currentPage, setCurrentPage }) {
+      const links = [
+        { key: 'home', label: '首页' },
+        { key: 'feedback', label: '反馈' },
+        { key: 'about', label: '关于' },
+      ];
+      return (
+        <header className="header">
+          <div className="header-inner">
+            <a href="#" className="logo" onClick={(e) => { e.preventDefault(); setCurrentPage('home'); }}>
+              苏<span>脚本</span>
+            </a>
+            <nav>
+              <ul className="nav-links">
+                {links.map(l => (
+                  <li key={l.key}>
+                    <a
+                      href="#"
+                      className={currentPage === l.key ? 'active' : ''}
+                      onClick={(e) => { e.preventDefault(); setCurrentPage(l.key); }}
+                    >{l.label}</a>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          </div>
+        </header>
+      );
+    }
+
+    function Home({ setCurrentPage }) {
+      return (
+        <>
+          <section className="hero">
+            <div className="hero-avatar">苏</div>
+            <h1>苏脚本 · 游戏辅助工具</h1>
+            <p>持续更新中，关注最新版本动态，遇到问题随时反馈。</p>
+          </section>
+          <h2 className="section-title">最新动态</h2>
+          <div className="post-list">
+            {posts.map(post => (
+              <article
+                key={post.id}
+                className="post-card"
+                onClick={() => setCurrentPage('post', post.id)}
+              >
+                <div className="post-meta">
+                  <span className="post-tag">{post.tag}</span>
+                  <span>{post.date}</span>
+                </div>
+                <h3>{post.title}</h3>
+                <p>{post.excerpt}</p>
+              </article>
+            ))}
+          </div>
+        </>
+      );
+    }
+
+    function PostDetail({ postId, setCurrentPage }) {
+      const post = posts.find(p => p.id === postId);
+      if (!post) {
+        return (
+          <div className="post-detail">
+            <a href="#" className="back-link" onClick={(e) => { e.preventDefault(); setCurrentPage('home'); }}>
+              ← 返回首页
+            </a>
+            <p>文章不存在或已被删除。</p>
+          </div>
+        );
+      }
+      return (
+        <article className="post-detail">
+          <a href="#" className="back-link" onClick={(e) => { e.preventDefault(); setCurrentPage('home'); }}>
+            ← 返回首页
+          </a>
+          <header className="post-detail-header">
+            <span className="post-tag">{post.tag}</span>
+            <h1>{post.title}</h1>
+            <div className="post-meta"><span>{post.date}</span></div>
+          </header>
+          <div className="post-body" dangerouslySetInnerHTML={{ __html: post.content }} />
+        </article>
+      );
+    }
+
+    function FeedbackPage({ feedbackList, onSubmitFeedback }) {
+      const [submitted, setSubmitted] = useState(false);
+      const [form, setForm] = useState({ name: '', type: 'Bug 反馈', version: '', content: '' });
+
+      const handleChange = (e) => {
+        const { name, value } = e.target;
+        setForm(prev => ({ ...prev, [name]: value }));
+      };
+
+      const handleSubmit = (e) => {
+        e.preventDefault();
+        onSubmitFeedback({
+          id: Date.now(),
+          name: form.name || '匿名用户',
+          type: form.type,
+          version: form.version || '未填写',
+          content: form.content,
+          date: new Date().toISOString().slice(0, 10),
+          status: '待处理'
+        });
+        setForm({ name: '', type: 'Bug 反馈', version: '', content: '' });
+        setSubmitted(true);
+        setTimeout(() => setSubmitted(false), 3000);
+      };
+
+      if (submitted) {
+        return (
+          <div className="feedback-success">
+            <div className="success-icon">✓</div>
+            <h2>反馈已提交！</h2>
+            <p>感谢你的反馈，我会尽快查看并回复。</p>
+            <button className="btn-primary" onClick={() => setSubmitted(false)}>
+              再提交一条
+            </button>
+          </div>
+        );
+      }
+
+      const feedbackTypes = ['Bug 反馈', '功能建议', '使用问题', '其他'];
+
+      return (
+        <div>
+          <h1 className="page-title">提交反馈</h1>
+          <p className="page-desc">遇到问题或想提建议？填写下面的表单，我会一一查看。</p>
+
+          <form className="feedback-form" onSubmit={handleSubmit}>
+            <div className="form-group">
+              <label htmlFor="name">昵称</label>
+              <input type="text" id="name" name="name" value={form.name}
+                onChange={handleChange} placeholder="怎么称呼你（选填）" />
+            </div>
+            <div className="form-group">
+              <label htmlFor="type">反馈类型</label>
+              <select id="type" name="type" value={form.type} onChange={handleChange}>
+                {feedbackTypes.map(t => <option key={t} value={t}>{t}</option>)}
+              </select>
+            </div>
+            <div className="form-group">
+              <label htmlFor="version">脚本版本</label>
+              <input type="text" id="version" name="version" value={form.version}
+                onChange={handleChange} placeholder="例如 v2.1.0" />
+            </div>
+            <div className="form-group">
+              <label htmlFor="content">详细描述 <span className="required">*</span></label>
+              <textarea id="content" name="content" value={form.content}
+                onChange={handleChange} placeholder="请尽量详细描述你遇到的问题或建议……"
+                rows="6" required />
+            </div>
+            <button type="submit" className="btn-primary">提交反馈</button>
+          </form>
+
+          {feedbackList.length > 0 && (
+            <div className="feedback-list">
+              <h2>历史反馈</h2>
+              {feedbackList.slice().reverse().map(item => (
+                <div key={item.id} className="feedback-item">
+                  <div className="feedback-item-header">
+                    <span>{item.name} · {item.type} · v{item.version}</span>
+                    <span className={`status-badge ${item.status === '已解决' ? 'status-fixed' : 'status-pending'}`}>
+                      {item.status}
+                    </span>
+                  </div>
+                  <div className="feedback-item-body">{item.content}</div>
+                  <div style={{ fontSize: '.75rem', color: '#a8a29e', marginTop: '6px' }}>{item.date}</div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      );
+    }
+
+    function About() {
+      return (
+        <div className="about-section">
+          <h1>关于苏脚本</h1>
+          <p>苏脚本是一个面向游戏玩家的辅助工具集，旨在帮助玩家解放双手、提升日常效率。</p>
+          <p>从 2024 年开始开发，目前已迭代到 v2.x 版本，持续优化中。</p>
+          <h2>主要功能</h2>
+          <ul className="skill-list">
+            <li>自动日常任务</li>
+            <li>自动副本挂机</li>
+            <li>自动领取奖励</li>
+            <li>多账号切换</li>
+            <li>自定义宏命令</li>
+          </ul>
+          <h2>使用声明</h2>
+          <p>本工具仅供个人娱乐使用，请勿用于商业用途或违反游戏规则的行为。使用本工具产生的任何后果由使用者自行承担。</p>
+        </div>
+      );
+    }
+
+    // ===== App =====
+    function App() {
+      const [currentPage, setCurrentPageState] = useState('home');
+      const [postId, setPostId] = useState(null);
+      const [feedbackList, setFeedbackList] = useState(loadFeedback);
+      const [toast, setToast] = useState('');
+
+      const setCurrentPage = (page, id) => {
+        setCurrentPageState(page);
+        setPostId(id);
+        window.scrollTo(0, 0);
+      };
+
+      const onSubmitFeedback = (feedback) => {
+        const updated = [...feedbackList, feedback];
+        setFeedbackList(updated);
+        localStorage.setItem('suscript_feedback', JSON.stringify(updated));
+        setToast('反馈提交成功！');
+        setTimeout(() => setToast(''), 2500);
+      };
+
+      const renderPage = () => {
+        switch (currentPage) {
+          case 'home': return <Home setCurrentPage={setCurrentPage} />;
+          case 'post': return <PostDetail postId={postId} setCurrentPage={setCurrentPage} />;
+          case 'feedback': return <FeedbackPage feedbackList={feedbackList} onSubmitFeedback={onSubmitFeedback} />;
+          case 'about': return <About />;
+          default: return <Home setCurrentPage={setCurrentPage} />;
+        }
+      };
+
+      return (
+        <div className="app">
+          <Header currentPage={currentPage} setCurrentPage={setCurrentPage} />
+          <main className="main">
+            {renderPage()}
+          </main>
+          <footer className="footer">
+            © 2026 苏脚本 · 仅供个人娱乐使用
+          </footer>
+          {toast && <div className="toast">{toast}</div>}
+        </div>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+  </script>
+</body>
+</html>
