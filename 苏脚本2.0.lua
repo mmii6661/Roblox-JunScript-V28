@@ -366,8 +366,7 @@ local HomeScripts = {
 	{ Name = "🐾 动物医院", File = "动物医院.lua" },
 	{ Name = "🍔 吃吃世界", File = "吃吃世界.lua" },
 	{ Name = "🚉 最后一站", File = "最后一站.lua" },
-	-- 以后往这里加，无限加 ↓
-	-- { Name = "🎮 新游戏名", File = "新文件.lua" },
+	{ Name = "🚨 通缉", File = "通缉.lua" },
 }
 
 for _, v in ipairs(HomeScripts) do
