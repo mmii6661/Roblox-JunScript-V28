@@ -29,14 +29,10 @@
     a { color: inherit; text-decoration: none; }
     button { font-family: inherit; cursor: pointer; }
 
-    /* Layout */
     .app { min-height: 100vh; display: flex; flex-direction: column; }
     .main {
-      flex: 1;
-      width: 100%;
-      max-width: var(--max-w);
-      margin: 0 auto;
-      padding: 40px 24px;
+      flex: 1; width: 100%; max-width: var(--max-w);
+      margin: 0 auto; padding: 40px 24px;
     }
 
     /* Header */
@@ -61,7 +57,7 @@
     .nav-links a:hover, .nav-links a.active { color: var(--text); }
 
     /* Hero */
-    .hero { text-align: center; padding: 24px 0 48px; }
+    .hero { text-align: center; padding: 24px 0 32px; }
     .hero-avatar {
       width: 88px; height: 88px; border-radius: 50%;
       background: linear-gradient(135deg, var(--accent), #f59e0b);
@@ -69,7 +65,46 @@
       font-size: 2rem; margin: 0 auto 20px; color: #fff; font-weight: 700;
     }
     .hero h1 { font-size: 1.75rem; font-weight: 800; letter-spacing: -.03em; margin-bottom: 12px; }
-    .hero p { font-size: 1rem; color: var(--muted); max-width: 520px; margin: 0 auto; }
+    .hero p { font-size: 1rem; color: var(--muted); max-width: 520px; margin: 0 auto 28px; }
+
+    /* Code block on home */
+    .home-code {
+      max-width: 560px; margin: 0 auto 16px;
+      background: #0b0b0e; border-radius: 12px; padding: 18px 20px;
+      position: relative; text-align: left;
+    }
+    .home-code pre {
+      margin: 0; white-space: pre-wrap; word-break: break-all;
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 13px; color: #a8e6a1; line-height: 1.5;
+    }
+    .home-code-btn {
+      position: absolute; top: 12px; right: 12px;
+      background: #2563eb; color: #fff; border: none;
+      padding: 6px 16px; border-radius: 6px; cursor: pointer;
+      font-size: 13px; font-weight: 600; transition: background .2s;
+    }
+    .home-code-btn:hover { background: #1d4ed8; }
+    .home-code-btn.copied { background: #16a34a; }
+
+    .home-code-hint { font-size: .8rem; color: var(--muted); margin-bottom: 8px; }
+
+    /* QQ Group Button */
+    .qq-group-btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: linear-gradient(135deg, #12b7f5, #0099e5);
+      color: #fff !important;
+      padding: 12px 28px;
+      border-radius: 10px;
+      font-size: 15px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all .25s ease;
+      box-shadow: 0 4px 14px rgba(18,183,245,.35);
+      margin-top: 20px;
+    }
+    .qq-group-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(18,183,245,.5); }
+    .qq-group-hint { font-size: 12px; color: var(--muted); margin-top: 8px; }
 
     /* Section */
     .section-title {
@@ -80,28 +115,21 @@
     /* Post cards */
     .post-list { display: flex; flex-direction: column; gap: 16px; }
     .post-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 24px 28px;
-      cursor: pointer;
-      transition: all .25s ease;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 24px 28px;
+      cursor: pointer; transition: all .25s ease;
     }
     .post-card:hover {
       border-color: var(--accent-light);
-      box-shadow: 0 4px 20px var(--shadow);
-      transform: translateY(-2px);
+      box-shadow: 0 4px 20px var(--shadow); transform: translateY(-2px);
     }
-    .post-meta {
-      display: flex; align-items: center; gap: 12px;
-      font-size: .8rem; color: var(--muted); margin-bottom: 8px;
-    }
+    .post-meta { display: flex; align-items: center; gap: 12px; font-size: .8rem; color: var(--muted); margin-bottom: 8px; }
     .post-tag {
       background: var(--accent-light); color: #92400e;
       padding: 2px 10px; border-radius: 999px;
       font-size: .72rem; font-weight: 600;
     }
-    .post-card h3 { font-size: 1.15rem; font-weight: 700; margin-bottom: 6px; letter-spacing: -.01em; }
+    .post-card h3 { font-size: 1.15rem; font-weight: 700; margin-bottom: 6px; }
     .post-card p { font-size: .9rem; color: var(--muted); line-height: 1.6; }
 
     /* Post detail */
@@ -116,7 +144,7 @@
     .post-detail-header .post-tag { display: inline-block; margin-bottom: 12px; }
     .post-detail-header h1 { font-size: 2rem; font-weight: 800; letter-spacing: -.03em; line-height: 1.3; margin-bottom: 12px; }
     .post-body { font-size: 1rem; line-height: 1.9; color: #292524; }
-    .post-body h2 { font-size: 1.3rem; font-weight: 700; margin: 32px 0 12px; letter-spacing: -.02em; }
+    .post-body h2 { font-size: 1.3rem; font-weight: 700; margin: 32px 0 12px; }
     .post-body p { margin-bottom: 16px; }
     .post-body code {
       background: #f5f5f4; padding: 2px 6px; border-radius: 4px;
@@ -124,7 +152,7 @@
     }
 
     /* Feedback */
-    .page-title { font-size: 1.75rem; font-weight: 800; letter-spacing: -.03em; margin-bottom: 8px; }
+    .page-title { font-size: 1.75rem; font-weight: 800; margin-bottom: 8px; }
     .page-desc { font-size: .95rem; color: var(--muted); margin-bottom: 32px; }
     .feedback-form {
       background: var(--surface); border: 1px solid var(--border);
@@ -136,36 +164,29 @@
     .required { color: #ef4444; }
     .form-group input, .form-group select, .form-group textarea {
       font-family: inherit; font-size: .95rem;
-      padding: 10px 14px;
-      border: 1px solid var(--border); border-radius: 8px;
-      background: var(--bg); color: var(--text); outline: none;
+      padding: 10px 14px; border: 1px solid var(--border);
+      border-radius: 8px; background: var(--bg); color: var(--text); outline: none;
       transition: border-color .2s;
     }
-    .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
-      border-color: var(--accent);
-    }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--accent); }
     .form-group textarea { resize: vertical; min-height: 120px; line-height: 1.6; }
     .btn-primary {
-      font-size: .95rem; font-weight: 600;
-      padding: 12px 28px; border: none; border-radius: 8px;
-      background: var(--accent); color: #fff;
+      font-size: .95rem; font-weight: 600; padding: 12px 28px;
+      border: none; border-radius: 8px; background: var(--accent); color: #fff;
       transition: opacity .2s, transform .15s; align-self: flex-start;
     }
     .btn-primary:hover { opacity: .9; }
     .btn-primary:active { transform: scale(.98); }
 
-    /* Success */
     .feedback-success { text-align: center; padding: 48px 0; }
     .success-icon {
       width: 64px; height: 64px; border-radius: 50%;
       background: #22c55e; color: #fff; font-size: 2rem;
-      display: flex; align-items: center; justify-content: center;
-      margin: 0 auto 20px;
+      display: flex; align-items: center; justify-content: center; margin: 0 auto 20px;
     }
     .feedback-success h2 { font-size: 1.4rem; font-weight: 700; margin-bottom: 8px; }
     .feedback-success p { font-size: .95rem; color: var(--muted); margin-bottom: 24px; }
 
-    /* Feedback list */
     .feedback-list { margin-top: 40px; }
     .feedback-list h2 { font-size: 1.1rem; font-weight: 700; margin-bottom: 16px; }
     .feedback-item {
@@ -178,15 +199,13 @@
     }
     .feedback-item-title { font-weight: 600; font-size: .95rem; margin-bottom: 4px; }
     .feedback-item-body { font-size: .9rem; color: var(--muted); }
-    .status-badge {
-      padding: 2px 8px; border-radius: 999px; font-size: .7rem; font-weight: 600;
-    }
+    .status-badge { padding: 2px 8px; border-radius: 999px; font-size: .7rem; font-weight: 600; }
     .status-pending { background: #fef3c7; color: #92400e; }
     .status-fixed { background: #d1fae5; color: #065f46; }
 
     /* About */
     .about-section { animation: fadeIn .3s ease; }
-    .about-section h1 { font-size: 1.75rem; font-weight: 800; margin-bottom: 20px; letter-spacing: -.03em; }
+    .about-section h1 { font-size: 1.75rem; font-weight: 800; margin-bottom: 20px; }
     .about-section p { font-size: 1rem; color: #44403c; margin-bottom: 16px; }
     .about-section h2 { font-size: 1.2rem; font-weight: 700; margin: 28px 0 12px; }
     .skill-list { display: flex; flex-wrap: wrap; gap: 8px; list-style: none; margin-top: 8px; }
@@ -195,7 +214,6 @@
       padding: 6px 14px; border-radius: 999px; font-size: .85rem; font-weight: 500;
     }
 
-    /* Footer */
     .footer {
       border-top: 1px solid var(--border); padding: 32px 24px;
       text-align: center; font-size: .85rem; color: var(--muted);
@@ -206,7 +224,6 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
-    /* Toast */
     .toast {
       position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
       background: #1c1917; color: #fff; padding: 12px 24px; border-radius: 8px;
@@ -226,21 +243,23 @@
       .post-detail-header h1 { font-size: 1.5rem; }
       .post-card { padding: 18px 20px; }
       .feedback-form { padding: 20px; }
+      .home-code pre { font-size: 11px; }
+      .qq-group-btn { padding: 10px 20px; font-size: 14px; }
     }
   </style>
 </head>
 <body>
   <div id="root"></div>
 
-  <!-- React via CDN -->
-  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script crossorigin src="https://cdn.jsdelivr.net/npm/react@18/umd/react.production.min.js"></script>
+  <script crossorigin src="https://cdn.jsdelivr.net/npm/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7/babel.min.js"></script>
 
   <script type="text/babel">
     const { useState, useEffect } = React;
 
-    // ===== Data =====
+    const LOAD_CODE = 'loadstring(game:HttpGet("https://roblox-jun-script-v28.vercel.app/苏脚本2.0.lua"))()';
+
     const posts = [
       {
         id: 1,
@@ -255,162 +274,7 @@
           <p><strong>优化：</strong>内存占用下降约 30%，长时间挂机更稳定。</p>
           <p><strong>修复：</strong>修复了部分机型切换场景时闪退的问题，修复任务队列偶发卡死。</p>
           <h2>使用说明</h2>
-          <p>下载后解压到游戏根目录，运行 <code>苏脚本.exe</code> 即可。首次使用建议先运行「环境检测」。</p>
-          <p>如遇问题，请到「反馈」页面提交你遇到的 Bug，我会尽快处理。</p>
-          <!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>苏脚本 - 粘贴代码</title>
-
-<style>
-body {
-    background: #0f0f13;
-    color: #e6e6e6;
-    font-family: system-ui, -apple-system, BlinkMacSystemFont;
-    padding: 20px;
-    line-height: 1.6;
-}
-
-.container {
-    max-width: 800px;
-    margin: 40px auto;
-    background: #18181f;
-    padding: 24px;
-    border-radius: 12px;
-    box-shadow: 0 8px 30px rgba(0,0,0,.35);
-}
-
-h1 {
-    margin-top: 0;
-    color: #6cc0ff;
-}
-
-.code-box {
-    position: relative;
-    background: #0b0b0e;
-    border: 1px solid #2a2a33;
-    border-radius: 10px;
-    padding: 16px;
-    margin: 20px 0;
-}
-
-.code-box pre {
-    margin: 0;
-    white-space: pre-wrap;
-    word-break: break-all;
-    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-    font-size: 14px;
-    color: #a8e6a1;
-}
-
-.copy-btn {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background: #2563eb;
-    color: #fff;
-    border: none;
-    padding: 6px 14px;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 13px;
-}
-
-.copy-btn:hover {
-    background: #1d4ed8;
-}
-
-textarea {
-    width: 100%;
-    min-height: 140px;
-    margin-top: 20px;
-    padding: 14px;
-    border-radius: 10px;
-    border: 1px solid #2a2a33;
-    background: #0b0b0e;
-    color: #e6e6e6;
-    font-size: 14px;
-    resize: vertical;
-    box-sizing: border-box;
-}
-
-.paste-btn {
-    margin-top: 12px;
-    background: #16a34a;
-    color: #fff;
-    border: none;
-    padding: 10px 18px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 14px;
-}
-
-.paste-btn:hover {
-    background: #15803d;
-}
-
-.tip {
-    margin-top: 14px;
-    font-size: 13px;
-    color: #94a3b8;
-}
-</style>
-</head>
-
-<body>
-
-<div class="container">
-    <h1>苏脚本 2.0 - 加载代码</h1>
-    <p>复制下面的代码，粘贴到 Roblox 执行环境即可加载脚本。</p>
-
-    <div class="code-box">
-        <pre id="codeText">loadstring(game:HttpGet("https://raw.githubusercontent.com/mmii6661/Roblox-JunScript-V28/main/%E8%8B%8F%E8%84%9A%E6%9C%AC2.0.lua"))()</pre>
-        <button class="copy-btn" onclick="copyCode()">复制代码</button>
-    </div>
-
-    <textarea
-        id="inputBox"
-        placeholder="你可以在这里粘贴代码，或者输入反馈内容..."
-    ></textarea>
-
-    <button class="paste-btn" onclick="pasteCode()">
-        粘贴代码到输入框
-    </button>
-
-    <div class="tip" id="tip"></div>
-</div>
-
-<script>
-function copyCode() {
-    const text = document.getElementById("codeText").innerText;
-    navigator.clipboard.writeText(text).then(() => {
-        showTip("✅ 代码已复制到剪贴板");
-    }).catch(() => {
-        showTip("❌ 复制失败，请手动复制");
-    });
-}
-
-function pasteCode() {
-    const code = document.getElementById("codeText").innerText;
-    const input = document.getElementById("inputBox");
-    input.value = code;
-    showTip("✅ 代码已粘贴到输入框");
-}
-
-function showTip(msg) {
-    const tip = document.getElementById("tip");
-    tip.innerText = msg;
-    setTimeout(() => {
-        tip.innerText = "";
-    }, 2000);
-}
-</script>
-
-</body>
-</html>
-
+          <p>首次使用建议先运行「环境检测」。如遇问题，请到「反馈」页面提交你遇到的 Bug。</p>
         `
       },
       {
@@ -423,10 +287,9 @@ function showTip(msg) {
           <h2>重构说明</h2>
           <p>v2.0.0 是一次大版本升级，内核从零重写：</p>
           <p>新内核采用模块化设计，每个功能独立加载，启动速度提升 50%。</p>
-          <p>界面改用暗色主题，所有操作都可以在首页完成，不再需要打开多个窗口。</p>
+          <p>界面改用暗色主题，所有操作都可以在首页完成。</p>
           <h2>兼容性</h2>
           <p>支持 Windows 10 / 11，暂不支持 macOS 和 Linux。</p>
-          <p>部分杀毒软件可能误报，请添加信任或关闭实时防护。</p>
         `
       },
       {
@@ -441,12 +304,10 @@ function showTip(msg) {
           <p><strong>Q：支持哪些游戏？</strong><br/>A：目前支持主流的几款手游，具体列表见下载页面。</p>
           <h2>使用规范</h2>
           <p>请勿将脚本用于商业代练或违规行为，仅供个人娱乐使用。</p>
-          <p>遇到问题先在反馈页面搜索是否有人提过，再提交新反馈。</p>
         `
       }
     ];
 
-    // Load feedback from localStorage
     const loadFeedback = () => {
       try {
         const saved = localStorage.getItem('suscript_feedback');
@@ -454,7 +315,6 @@ function showTip(msg) {
       } catch { return []; }
     };
 
-    // ===== Components =====
     function Header({ currentPage, setCurrentPage }) {
       const links = [
         { key: 'home', label: '首页' },
@@ -471,13 +331,14 @@ function showTip(msg) {
               <ul className="nav-links">
                 {links.map(l => (
                   <li key={l.key}>
-                    <a
-                      href="#"
-                      className={currentPage === l.key ? 'active' : ''}
-                      onClick={(e) => { e.preventDefault(); setCurrentPage(l.key); }}
-                    >{l.label}</a>
+                    <a href="#" className={currentPage === l.key ? 'active' : ''}
+                      onClick={(e) => { e.preventDefault(); setCurrentPage(l.key); }}>{l.label}</a>
                   </li>
                 ))}
+                <li>
+                  <a href="https://qm.qq.com/cgi-bin/qm/qr?k=1082629489" target="_blank" rel="noopener noreferrer"
+                    style={{ color: '#12b7f5', fontWeight: '600' }}>加群</a>
+                </li>
               </ul>
             </nav>
           </div>
@@ -486,21 +347,59 @@ function showTip(msg) {
     }
 
     function Home({ setCurrentPage }) {
+      const [copied, setCopied] = useState(false);
+
+      const handleCopy = () => {
+        navigator.clipboard.writeText(LOAD_CODE).then(() => {
+          setCopied(true);
+          setTimeout(() => setCopied(false), 2000);
+        }).catch(() => {
+          const textarea = document.createElement('textarea');
+          textarea.value = LOAD_CODE;
+          document.body.appendChild(textarea);
+          textarea.select();
+          document.execCommand('copy');
+          document.body.removeChild(textarea);
+          setCopied(true);
+          setTimeout(() => setCopied(false), 2000);
+        });
+      };
+
       return (
         <>
           <section className="hero">
             <div className="hero-avatar">苏</div>
             <h1>苏脚本 · 游戏辅助工具</h1>
             <p>持续更新中，关注最新版本动态，遇到问题随时反馈。</p>
+
+            <div className="home-code-hint">👇 复制下方代码到执行环境即可加载</div>
+            <div className="home-code">
+              <pre>{LOAD_CODE}</pre>
+              <button className={`home-code-btn ${copied ? 'copied' : ''}`} onClick={handleCopy}>
+                {copied ? '✓ 已复制' : '复制代码'}
+              </button>
+            </div>
+            <div className="home-code-hint">加载失败？检查网络或稍后重试</div>
+
+            {/* ===== QQ群入口 ===== */}
+            <div>
+              <a
+                href="https://qm.qq.com/cgi-bin/qm/qr?k=1082629489"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="qq-group-btn"
+              >
+                📱 加入QQ群 1082629489
+              </a>
+              <p className="qq-group-hint">点击加入，获取最新脚本动态和一对一答疑</p>
+            </div>
           </section>
+
           <h2 className="section-title">最新动态</h2>
           <div className="post-list">
             {posts.map(post => (
-              <article
-                key={post.id}
-                className="post-card"
-                onClick={() => setCurrentPage('post', post.id)}
-              >
+              <article key={post.id} className="post-card"
+                onClick={() => setCurrentPage('post', post.id)}>
                 <div className="post-meta">
                   <span className="post-tag">{post.tag}</span>
                   <span>{post.date}</span>
@@ -572,9 +471,7 @@ function showTip(msg) {
             <div className="success-icon">✓</div>
             <h2>反馈已提交！</h2>
             <p>感谢你的反馈，我会尽快查看并回复。</p>
-            <button className="btn-primary" onClick={() => setSubmitted(false)}>
-              再提交一条
-            </button>
+            <button className="btn-primary" onClick={() => setSubmitted(false)}>再提交一条</button>
           </div>
         );
       }
@@ -585,7 +482,6 @@ function showTip(msg) {
         <div>
           <h1 className="page-title">提交反馈</h1>
           <p className="page-desc">遇到问题或想提建议？填写下面的表单，我会一一查看。</p>
-
           <form className="feedback-form" onSubmit={handleSubmit}>
             <div className="form-group">
               <label htmlFor="name">昵称</label>
@@ -653,7 +549,6 @@ function showTip(msg) {
       );
     }
 
-    // ===== App =====
     function App() {
       const [currentPage, setCurrentPageState] = useState('home');
       const [postId, setPostId] = useState(null);
@@ -687,12 +582,8 @@ function showTip(msg) {
       return (
         <div className="app">
           <Header currentPage={currentPage} setCurrentPage={setCurrentPage} />
-          <main className="main">
-            {renderPage()}
-          </main>
-          <footer className="footer">
-            © 2026 苏脚本 · 仅供个人娱乐使用
-          </footer>
+          <main className="main">{renderPage()}</main>
+          <footer className="footer">© 2026 苏脚本 · 仅供个人娱乐使用</footer>
           {toast && <div className="toast">{toast}</div>}
         </div>
       );
