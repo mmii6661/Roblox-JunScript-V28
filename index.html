@@ -257,6 +257,160 @@
           <h2>使用说明</h2>
           <p>下载后解压到游戏根目录，运行 <code>苏脚本.exe</code> 即可。首次使用建议先运行「环境检测」。</p>
           <p>如遇问题，请到「反馈」页面提交你遇到的 Bug，我会尽快处理。</p>
+          <!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>苏脚本 - 粘贴代码</title>
+
+<style>
+body {
+    background: #0f0f13;
+    color: #e6e6e6;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont;
+    padding: 20px;
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 800px;
+    margin: 40px auto;
+    background: #18181f;
+    padding: 24px;
+    border-radius: 12px;
+    box-shadow: 0 8px 30px rgba(0,0,0,.35);
+}
+
+h1 {
+    margin-top: 0;
+    color: #6cc0ff;
+}
+
+.code-box {
+    position: relative;
+    background: #0b0b0e;
+    border: 1px solid #2a2a33;
+    border-radius: 10px;
+    padding: 16px;
+    margin: 20px 0;
+}
+
+.code-box pre {
+    margin: 0;
+    white-space: pre-wrap;
+    word-break: break-all;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 14px;
+    color: #a8e6a1;
+}
+
+.copy-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: #2563eb;
+    color: #fff;
+    border: none;
+    padding: 6px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+}
+
+.copy-btn:hover {
+    background: #1d4ed8;
+}
+
+textarea {
+    width: 100%;
+    min-height: 140px;
+    margin-top: 20px;
+    padding: 14px;
+    border-radius: 10px;
+    border: 1px solid #2a2a33;
+    background: #0b0b0e;
+    color: #e6e6e6;
+    font-size: 14px;
+    resize: vertical;
+    box-sizing: border-box;
+}
+
+.paste-btn {
+    margin-top: 12px;
+    background: #16a34a;
+    color: #fff;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.paste-btn:hover {
+    background: #15803d;
+}
+
+.tip {
+    margin-top: 14px;
+    font-size: 13px;
+    color: #94a3b8;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+    <h1>苏脚本 2.0 - 加载代码</h1>
+    <p>复制下面的代码，粘贴到 Roblox 执行环境即可加载脚本。</p>
+
+    <div class="code-box">
+        <pre id="codeText">loadstring(game:HttpGet("https://raw.githubusercontent.com/mmii6661/Roblox-JunScript-V28/main/%E8%8B%8F%E8%84%9A%E6%9C%AC2.0.lua"))()</pre>
+        <button class="copy-btn" onclick="copyCode()">复制代码</button>
+    </div>
+
+    <textarea
+        id="inputBox"
+        placeholder="你可以在这里粘贴代码，或者输入反馈内容..."
+    ></textarea>
+
+    <button class="paste-btn" onclick="pasteCode()">
+        粘贴代码到输入框
+    </button>
+
+    <div class="tip" id="tip"></div>
+</div>
+
+<script>
+function copyCode() {
+    const text = document.getElementById("codeText").innerText;
+    navigator.clipboard.writeText(text).then(() => {
+        showTip("✅ 代码已复制到剪贴板");
+    }).catch(() => {
+        showTip("❌ 复制失败，请手动复制");
+    });
+}
+
+function pasteCode() {
+    const code = document.getElementById("codeText").innerText;
+    const input = document.getElementById("inputBox");
+    input.value = code;
+    showTip("✅ 代码已粘贴到输入框");
+}
+
+function showTip(msg) {
+    const tip = document.getElementById("tip");
+    tip.innerText = msg;
+    setTimeout(() => {
+        tip.innerText = "";
+    }, 2000);
+}
+</script>
+
+</body>
+</html>
+
         `
       },
       {
